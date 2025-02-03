@@ -1,0 +1,39 @@
+nav {
+    display: flex;
+    align-items: center;
+    background-color: #80cda0;
+}
+
+nav * {
+    padding: 2rem 1rem 2rem 2rem;
+}
+
+nav h1 {
+    font-size: 2rem;
+}
+
+nav a {
+    font-size: 1.2rem;
+    color: #efefef;
+    font-weight: bold;
+}
+
+.about-me {
+    display: flex;
+    gap: 1em;
+    margin-top: 2rem;
+}
+
+img {
+    display: block;
+    width: 12rem;
+    margin: 0rem 3rem;
+}
+
+.contact-info {
+    margin-left: 3rem;
+}
+
+.hobbies {
+    margin-left: 3rem;
+}
