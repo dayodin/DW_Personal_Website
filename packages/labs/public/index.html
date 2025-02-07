@@ -5,22 +5,31 @@
     <link href="token.css" rel="stylesheet" />
 
     <title>My First Web Page</title>
+    <script type="module" src="header.mjs"></script>
 </head>
 
 <body>
-    <Nav>
-        <h1>Karsten Dinsmore</h1>
-        <a href='./index.html'>Home</a>
-        <a href='./hobbies.html'>Hobbies</a>
-    </Nav>    
-
+    
+    <header id="navigation"></header>
     
     <div class="about-me">
-        <img
-            width="100"
-            src="./pic_of_me.jpg"
-            alt="A picture of something"/>
-
+        <div class="contact-info">
+            <img
+                width="100"
+                src="./pic_of_me.jpg"
+                alt="A picture of me"/>
+            <dl>
+                <dt>Email</dt>
+                <dd>kdinsmor@calpoly.edu</dd>
+    
+                <dt>Phone</dt>
+                <dd>(971) 300-5662</dd>
+    
+                <dt>Github</dt>
+                <dd>dayodin</dd>
+            </dl>
+        </div>
+        
         <div class="about-me-body">
             <h2>About Me!</h2>
 
@@ -36,19 +45,6 @@
             </ol>
         </div>
         
-    </div>
-
-    <div class="contact-info">
-        <dl>
-            <dt>Email</dt>
-            <dd>kdinsmor@calpoly.edu</dd>
-
-            <dt>Phone</dt>
-            <dd>(971) 300-5662</dd>
-
-            <dt>Github</dt>
-            <dd>dayodin</dd>
-        </dl>
     </div>
 
     

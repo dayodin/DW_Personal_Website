@@ -11,11 +11,17 @@ nav * {
 nav h1 {
     font-size: 2rem;
 }
-
 nav a {
     font-size: 1.2rem;
     color: #efefef;
     font-weight: bold;
+    text-decoration: none;
+}
+
+nav a.active {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #efefef;
 }
 
 .about-me {
