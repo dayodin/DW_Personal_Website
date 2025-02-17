@@ -68,6 +68,10 @@ let navHTML =
 `<Nav>
     <div class="header-add-btn">
         <h1>Karsten Dinsmore</h1>
+        <label>
+            <input type="checkbox" autocomplete="off" />
+            Dark mode
+        </label>
         <button id="menu-button">Menu</button>
     </div>
     <div id="links" >
@@ -91,6 +95,16 @@ class KDNavbar extends HTMLElement {
             } else {
                 x.style.display = "none";
             }
+        });
+
+        const dark_mode = shadowRoot.querySelector("label");
+
+        dark_mode.addEventListener("change", (e) => {
+            var body = document.body;
+            
+            body.classList.toggle("dark-mode")
+
+            console.log(body.classList)
         });
 
         // var html = document.documentElement;

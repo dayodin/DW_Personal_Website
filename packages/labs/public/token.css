@@ -2,4 +2,12 @@
     background-color: #a5debd;
     font-family: "PT Sans", Calibri, Tahoma, sans-serif;
     color: rgb(14, 115, 84);
-} 
+}
+
+body.dark-mode {
+    --color-background-header: #101070;
+    --color-background: #00004d;
+    --color-text: #e8ffff;
+    --color-link: #ffa576;
+    --color-border: var(--color-link);
+}
