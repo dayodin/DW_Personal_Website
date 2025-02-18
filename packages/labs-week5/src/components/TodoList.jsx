@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useId }  from "react";
+import React, { useState, useEffect }  from "react";
 import { v4 as uuidv4 } from 'uuid';
 
 import TodoItem from "./TodoItem";
 
 function TodoList (props) {
-    const INITIAL_TASK_LIST = [{ name: "Eat", id: useId(), completed: false }, 
+    const INITIAL_TASK_LIST = [{ name: "Eat", id: uuidv4(), completed: false }, 
                                { name: "Sleep", id: uuidv4(), completed: false },
                                { name: "Repeat", id: uuidv4(), completed: false }]
 

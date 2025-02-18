@@ -1,4 +1,5 @@
 import React from 'react';
+import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 
@@ -15,7 +16,7 @@ function TodoItem (props) {
     return (
       <li className="todo mb-2">
         <div className="c-cb">
-          <input id="todo-0" 
+          <input id={uuidv4()} 
                  type="checkbox" 
                  checked={props.completed}
                  onChange={onToggleTask} />
