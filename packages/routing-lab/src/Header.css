@@ -1,0 +1,24 @@
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: aliceblue;
+    padding: 0 2em;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+header div {
+    display: flex;
+    gap: 3em;
+}
+
+header nav {
+    display: flex;
+    gap: 1em;
+}
+
+.dark-mode header {
+    background-color: black;
+    color:antiquewhite;
+    transition: background-color 0.3s, color 0.3s;
+}
