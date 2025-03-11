@@ -15,7 +15,7 @@ export interface AuthorDocument {
     username: string;
     email: string;
 }
-  
+
 // This is the type returned by getAllImages().
 // The author field is now replaced by the full AuthorDocument.
 export interface DenormalizedImageDocument {
@@ -31,13 +31,47 @@ export interface DenormalizedImageDocument {
 export class ImageProvider {
     constructor(private readonly mongoClient: MongoClient) {}
 
-    async getAllImages(): Promise<DenormalizedImageDocument[]> { // TODO #2
+    async getAllImages(authorId?: string): Promise<DenormalizedImageDocument[]> { // TODO #2
         const collectionName = process.env.IMAGES_COLLECTION_NAME
         if (!collectionName) {
             throw new Error("Missing IMAGES_COLLECTION_NAME from environment variables");
         }
-        
+
         const collection = this.mongoClient.db().collection<ImageDocument>(collectionName); // TODO #1
+
+        // const pipeline: any[] = [];
+
+        // // If authorId is provided, filter documents where the "author" field matches it.
+        // if (authorId) {
+        //     pipeline.push({ $match: { author: authorId } });
+        // }
+
+        // // Continue building the pipeline (e.g., with $lookup, $unwind, etc.)
+        // pipeline.push(
+        //     {
+        //         $lookup: {
+        //         from: "users",
+        //         localField: "author",
+        //         foreignField: "_id",
+        //         as: "authorData",
+        //         },
+        //     },
+        //     {
+        //         $unwind: {
+        //         path: "$authorData",
+        //         preserveNullAndEmptyArrays: true,
+        //         },
+        //     },
+        //     {
+        //         $project: {
+        //         _id: 1,
+        //         src: 1,
+        //         name: 1,
+        //         likes: 1,
+        //         author: "$authorData",
+        //         },
+        //     }
+        // );
 
         // Build an aggregation pipeline that denormalizes the author field.
         const pipeline = [
@@ -58,21 +92,21 @@ export class ImageProvider {
                 },
             },
             {
-            // Project the fields we want in the final result,
-            // replacing the author field with the joined authorData.
-            $project: {
-                _id: 1,
-                src: 1,
-                name: 1,
-                likes: 1,
-                author: "$authorData",
-            },
+                // Project the fields we want in the final result,
+                // replacing the author field with the joined authorData.
+                $project: {
+                    _id: 1,
+                    src: 1,
+                    name: 1,
+                    likes: 1,
+                    author: "$authorData",
+                },
             },
         ];
 
         // Run the aggregation pipeline and return the results.
         const images = await collection.aggregate<DenormalizedImageDocument>(pipeline).toArray();
-        console.log(images);
+        // console.log(images);
         return images;
     }
 }
