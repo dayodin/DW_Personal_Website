@@ -19,24 +19,24 @@ async function setUpServer () {
     const mongoClient = await MongoClient.connect(connectionString);
     const collectionInfos = await mongoClient.db().listCollections().toArray();
     console.log(collectionInfos.map(collectionInfo => collectionInfo.name)); // For debug only
+
+
+    const app = express();
+
+    app.use(express.static(staticDir));
+
+    app.get("/hello", (req: Request, res: Response) => {
+        res.send("Hello, World");
+    });
+
+    registerImageRoutes(app, mongoClient)
+
+    app.get("*", (req: Request, res: Response) => {
+        res.sendFile(path.resolve(staticDir, 'index.html'));
+    });
+
+    app.listen(PORT, () => {
+        console.log(`Server running at http://localhost:${PORT}`);
+    });
 }
-
-const app = express();
-
-app.use(express.static(staticDir));
-
-app.get("/hello", (req: Request, res: Response) => {
-    res.send("Hello, World");
-});
-
-registerImageRoutes(app)
-
-app.get("*", (req: Request, res: Response) => {
-    res.sendFile(path.resolve(staticDir, 'index.html'));
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
-
 setUpServer()
