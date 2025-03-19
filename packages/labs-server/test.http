@@ -1,0 +1,37 @@
+### This is a comment
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{ "username": "newuser", "password": "password" }
+
+### Missing Password
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{ "username": "newuser" }
+
+### Missing credentials
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{ "username": "someuser" }
+
+### Incorrect credentials
+POST http://localhost:3000/auth/login 
+Content-Type: application/json
+
+{ "username": "nonexistent", "password": "password" }
+
+### Successful login
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{ "username": "newuser", "password": "password" }
+
+
+### A second example, each request should be delimited by a triple hash
+# GET http://localhost:3000/api/images
+
+#
+GET http://localhost:3000/api/images
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im5ld3VzZXIiLCJpYXQiOjE3NDIxNTY5NDYsImV4cCI6MTc0MjI0MzM0Nn0.4-k7T8TpQIsOu06Ubt7wy9Tja8jeDQ4mIAeYjazPAuU

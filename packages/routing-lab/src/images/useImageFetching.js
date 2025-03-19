@@ -36,19 +36,36 @@ const IMAGES = [
  * @param delay {number} the number of milliseconds fetching will take
  * @returns {{isLoading: boolean, fetchedImages: ImageData[]}} fetch state and data
  */
-export function useImageFetching(imageId, delay=1000) {
+export function useImageFetching(imageId, authToken, delay=1000) {
+
     const [isLoading, setIsLoading] = useState(true);
     const [fetchedImages, setFetchedImages] = useState([]);
+
     useEffect(() => {
-        setTimeout(() => {
-            if (imageId === "") {
-                setFetchedImages(IMAGES);
-            } else {
-                setFetchedImages(IMAGES.filter((image) => image.id === imageId));
-            }
+
+        if (!authToken) {
             setIsLoading(false);
-        }, delay);
-    }, [imageId]);
+            return;
+        }
+
+        const fetchImages = async () => {
+            try {
+                const response = await fetch("/api/images", {
+                    headers: {
+                        "Authorization": `Bearer ${authToken}`
+                    }
+                });
+                const data = await response.json();
+                setFetchedImages(data);
+            } catch (error) {
+                console.error("Error fetching images:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+      
+        fetchImages();
+    }, [imageId, authToken]); 
 
     return { isLoading, fetchedImages };
 }

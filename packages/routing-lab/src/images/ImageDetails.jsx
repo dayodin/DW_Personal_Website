@@ -11,7 +11,7 @@ export function ImageDetails(props) {
     if (isLoading) {
         return <h2>Loading...</h2>;
     }
-    const imageData = fetchedImages[0];
+    const imageData = fetchedImages.find((image) => image._id === imageId);
     if (!imageData) {
         return <h2>Image not found</h2>;
     }
@@ -19,7 +19,7 @@ export function ImageDetails(props) {
     return (
         <>
             <h2>{imageData.name}</h2>
-            <img className="ImageDetails-img" src={imageData.src} alt={imageData.name} />
+            <img className="ImageDetails-img" src={imageData.src} alt={imageData.name} /> 
         </>
     )
 }

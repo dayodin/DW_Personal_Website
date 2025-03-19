@@ -38,77 +38,70 @@ export class ImageProvider {
         
         console.log(collectionName);
 
-        const collection = this.mongoClient.db().collection<ImageDocument>(collectionName); // TODO #1
+        // const collection = this.mongoClient.db().collection<ImageDocument>(collectionName); // TODO #1
 
-        const pipeline: any[] = [];
+        // const pipeline: any[] = [];
 
-        // If authorId is provided, filter documents where the "author" field matches it.
-        if (authorId) {
-            pipeline.push({ $match: { author: authorId } });
-        }
+        // // If authorId is provided, filter documents where the "author" field matches it.
+        // if (authorId) {
+        //     pipeline.push({ $match: { author: authorId } });
+        // }
 
-        // Continue building the pipeline (e.g., with $lookup, $unwind, etc.)
-        pipeline.push(
-            {
-                $lookup: {
-                from: "users",
-                localField: "author",
-                foreignField: "_id",
-                as: "authorData",
-                },
-            },
-            {
-                $unwind: {
-                path: "$authorData",
-                preserveNullAndEmptyArrays: true,
-                },
-            },
-            {
-                $project: {
-                _id: 1,
-                src: 1,
-                name: 1,
-                likes: 1,
-                author: "$authorData",
-                },
-            }
-        );
-
-        // Build an aggregation pipeline that denormalizes the author field.
-        // const pipeline = [
+        // // Continue building the pipeline (e.g., with $lookup, $unwind, etc.)
+        // pipeline.push(
         //     {
-        //         // Lookup into the "authors" collection where _id matches the image's author.
         //         $lookup: {
-        //             from: "users", // authors collection
-        //             localField: "author",
-        //             foreignField: "_id",
-        //             as: "authorData",
+        //         from: "users",
+        //         localField: "author",
+        //         foreignField: "_id",
+        //         as: "authorData",
         //         },
         //     },
         //     {
-        //         // Flatten the resulting array from $lookup.
         //         $unwind: {
-        //             path: "$authorData",
-        //             preserveNullAndEmptyArrays: true,
+        //         path: "$authorData",
+        //         preserveNullAndEmptyArrays: true,
         //         },
         //     },
         //     {
-        //         // Project the fields we want in the final result,
-        //         // replacing the author field with the joined authorData.
         //         $project: {
-        //             _id: 1,
-        //             src: 1,
-        //             name: 1,
-        //             likes: 1,
-        //             author: "$authorData",
+        //         _id: 1,
+        //         src: 1,
+        //         name: 1,
+        //         likes: 1,
+        //         author: "$authorData",
         //         },
-        //     },
-        // ];
+        //     }
+        // );
 
-        // Run the aggregation pipeline and return the results.
-        const images = await collection.aggregate<DenormalizedImageDocument>(pipeline).toArray();
-        // const images = await collection.find().toArray();
-        // console.log(images);
+        // // Run the aggregation pipeline and return the results.
+        // const images = await collection.aggregate<DenormalizedImageDocument>(pipeline).toArray();
+        const images = await this.mongoClient
+            .db()
+            .collection(collectionName)
+            .find()
+            .toArray();
         return images;
+    }
+
+    async updateImageName(imageId: string, newName: string): Promise<number> {
+        const collectionName = process.env.IMAGES_COLLECTION_NAME;
+        if (!collectionName) {
+            throw new Error("Missing IMAGES_COLLECTION_NAME from environment variables");
+        }
+      
+        const collection = this.mongoClient.db().collection<ImageDocument>(collectionName);
+        const result = await collection.updateOne(
+            { _id: imageId },
+            { $set: { name: newName } }
+        );
+        
+        return result.matchedCount;
+    }
+
+    async createImage(newImage: ImageDocument) {
+        const collectionName = process.env.IMAGES_COLLECTION_NAME || "images"
+        await this.mongoClient.db().collection<ImageDocument>(collectionName).insertOne(newImage);
+        return newImage;
     }
 }
